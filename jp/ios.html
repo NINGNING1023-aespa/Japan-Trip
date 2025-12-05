@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Japan Journey 2025</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="https://images.prestigeonline.com/wp-content/uploads/sites/6/2025/06/16143016/usagi-chiikawa-characters-820x1024-1.jpeg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-black: #0a0a0a;
+            --color-white: #ffffff;
+            --color-red: #bc002d; 
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-black);
+            color: var(--color-white);
+            margin: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        .serif { font-family: var(--font-serif); }
+        .tracking-fashion { letter-spacing: 0.25em; }
+        
+        /* Animation */
+        .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(40px); }
+        .fade-out-absolute { animation: fadeOutAbsolute 0.8s ease-out forwards; }
+        .slide-up-leave { animation: slideUpLeave 1s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+        
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOutAbsolute { to { opacity: 0; visibility: hidden; } }
+        @keyframes slideUpLeave { to { transform: translateY(-120vh); } }
+
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-700 { animation-delay: 0.7s; }
+
+        /* Nav */
+        .day-nav-item.active {
+            color: var(--color-red);
+            border-left: 3px solid var(--color-red);
+            padding-left: 1.5rem;
+            font-family: var(--font-serif);
+            font-style: italic;
+            background: linear-gradient(90deg, rgba(188,0,45,0.05) 0%, transparent 100%);
+        }
+        .day-nav-item { transition: all 0.4s ease; border-left: 3px solid transparent; }
+
+        .nav-link.active::after { width: 100%; }
+        .nav-link::after {
+            content: ''; display: block; width: 0; height: 1px; 
+            background: var(--color-red); transition: width 0.3s; margin-top: 4px;
+        }
+        
+        .avatar-border { border: 1px solid rgba(0,0,0,0.6); box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+
+        /* iPod CSS */
+        .ipod-case {
+            background: linear-gradient(135deg, #e6e6e6 0%, #cccccc 50%, #b3b3b3 100%);
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.9), inset -1px -1px 2px rgba(0,0,0,0.2), 15px 25px 50px rgba(0,0,0,0.6);
+            border-radius: 30px;
+        }
+        .click-wheel {
+            background: #f8f8f8;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        .click-wheel:active .center-button { transform: scale(0.96); }
+        .center-button {
+            background: linear-gradient(180deg, #dddddd 0%, #aaaaaa 100%);
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .blur-layer-ready { opacity: 0; visibility: hidden; transition: opacity 0.8s ease-in-out; }
+        .blur-layer-active { opacity: 1; visibility: visible; }
+
+        /* Sound Wave */
+        .sound-wave-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            height: 100%;
+            gap: 3px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .wave-line-item {
+            height: 3px;
+            background-color: #bc002d;
+            border-radius: 2px;
+            opacity: 0.7;
+            transition: all 0.5s ease-in-out;
+        }
+        .wave-line-item:hover {
+            opacity: 1;
+            transform: scaleX(1.2);
+            box-shadow: 0 0 5px rgba(188,0,45,0.8);
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; color: black; }
+            #scene-container { display: none !important; }
+            #main-content { opacity: 1 !important; display: block !important; position: static !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="audio-player" preload="auto" src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Elisions.mp3"></audio>
+
+    <div id="scene-container" class="fixed inset-0 z-[100] bg-black overflow-hidden">
+        
+        <div class="absolute inset-0 z-0">
+            <img src="https://www.agoda.com/wp-content/uploads/2024/04/toyko-1244x700.jpg" 
+                 class="w-full h-full object-cover opacity-80">
+            <div class="absolute inset-0 bg-black/30"></div>
+        </div>
+
+        <div id="intro-layer" class="absolute inset-0 z-20 flex flex-col items-center justify-center transition-opacity duration-800">
+            <div class="text-center text-white px-4">
+                <p class="text-xs md:text-sm uppercase tracking-[0.4em] mb-6 text-red-500 font-bold fade-in-up">The Winter Collection</p>
+                <h1 class="text-6xl md:text-8xl lg:text-9xl serif font-bold tracking-tighter mb-8 text-white drop-shadow-2xl fade-in-up delay-200">
+                    JAPAN<span class="text-red-600">.</span>
+                </h1>
+                <div class="w-[1px] h-16 bg-white/50 mx-auto mb-8 fade-in-up delay-500"></div>
+                <p class="text-sm font-light tracking-[0.3em] uppercase mb-12 text-gray-200 fade-in-up delay-500">
+                    DECEMBER 2025 · KYOTO & TOKYO
+                </p>
+                <button onclick="goToLogin()" class="fade-in-up delay-700 group relative px-10 py-4 border border-white/50 hover:border-white transition-all duration-300 overflow-hidden bg-white/10 backdrop-blur-md cursor-pointer">
+                    <span class="relative z-10 text-xs font-bold tracking-[0.3em] uppercase group-hover:text-black transition-colors duration-300">Start Journey</span>
+                    <div class="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                </button>
+            </div>
+        </div>
+
+        <div id="login-layer" class="absolute inset-0 z-30 blur-layer-ready flex flex-col items-center justify-center overflow-y-auto">
+            <div class="absolute inset-0 bg-black/40 backdrop-blur-md z-[-1]"></div>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-32 transform scale-95 transition-transform duration-1000" id="login-content">
+                
+                <div class="ipod-case w-[300px] h-[480px] p-6 flex flex-col items-center relative shadow-2xl flex-shrink-0 my-8">
+                    <div class="w-full h-[190px] mb-8 overflow-hidden relative flex flex-col border-2 border-gray-800 bg-[#222] rounded-lg">
+                        <div class="bg-gradient-to-b from-gray-700 to-gray-800 h-5 w-full flex justify-between items-center px-2">
+                            <div class="flex items-center gap-1">
+                                <span class="text-[9px] text-blue-300 font-bold" id="play-icon">||</span>
+                                <span class="text-[9px] text-white font-mono">Fujii Kaze</span>
+                            </div>
+                            <div class="w-4 h-2 border border-white/50 flex p-[1px]"><div class="h-full w-[80%] bg-green-400"></div></div>
+                        </div>
+                        <div class="flex-1 flex flex-row items-center p-3 gap-3 bg-[#111]">
+                            <img id="ipod-art" src="https://meet.eslite.com/CMS/Files/@M091/2024-09/2024_fujii_kaze/009_fujii_kaze.jpg" class="w-24 h-24 object-cover border border-gray-600 shadow-lg">
+                            <div class="flex flex-col w-32 overflow-hidden">
+                                <span id="ipod-title" class="text-white text-xs font-bold truncate mb-1">Nan-Nan</span>
+                                <span id="ipod-artist" class="text-gray-400 text-[10px] truncate">Fujii Kaze</span>
+                                <span id="ipod-album" class="text-gray-600 text-[9px] mt-2 truncate">HELP EVER HURT NEVER</span>
+                            </div>
+                        </div>
+                        <div class="h-7 bg-white flex items-center px-2 gap-2 border-t border-gray-300">
+                            <span id="curr-time" class="text-[9px] text-black font-mono">0:00</span>
+                            <div class="flex-1 h-1.5 bg-gray-300 rounded-full overflow-hidden relative">
+                                <div id="ipod-bar" class="h-full bg-blue-500 w-0 transition-all duration-200"></div>
+                            </div>
+                            <span id="total-time" class="text-[9px] text-black font-mono">-3:42</span>
+                        </div>
+                    </div>
+                    <div class="click-wheel w-[180px] h-[180px] rounded-full relative flex items-center justify-center">
+                        <span class="absolute top-4 text-[10px] font-bold text-gray-400 tracking-widest">MENU</span>
+                        <div onclick="togglePlay()" class="absolute bottom-4 left-1/2 -translate-x-1/2 w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-full z-10 cursor-pointer"><span class="text-[14px] text-gray-500 mt-2">▶||</span></div>
+                        <div onclick="prevSong()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-full z-10 cursor-pointer"><span class="text-[14px] text-gray-500 mr-2">|◀◀</span></div>
+                        <div onclick="nextSong()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-full z-10 cursor-pointer"><span class="text-[14px] text-gray-500 ml-2">▶▶|</span></div>
+                        <div class="center-button w-[60px] h-[60px] rounded-full z-20 cursor-pointer" onclick="togglePlay()"></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-8">
+                    <div class="text-white/60 text-xs tracking-[0.3em] uppercase text-center md:text-left mb-2">Select User</div>
+                    <div onclick="enterMainSite('hcj')" class="group flex items-center gap-6 cursor-pointer">
+                        <div class="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-white avatar-border overflow-hidden transition-all duration-300 group-hover:scale-110 group-hover:ring-4 ring-red-600/30">
+                            <img src="https://images.prestigeonline.com/wp-content/uploads/sites/3/2025/05/28185138/hachiware-chiikawa-characters-820x1024.jpg" class="w-full h-full object-cover scale-110">
+                        </div>
+                        <span class="text-white text-2xl serif italic tracking-widest group-hover:text-red-500 transition-colors">hcj</span>
+                    </div>
+                    <div onclick="enterMainSite('ee')" class="group flex items-center gap-6 cursor-pointer">
+                        <div class="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-white avatar-border overflow-hidden transition-all duration-300 group-hover:scale-110 group-hover:ring-4 ring-red-600/30">
+                            <img src="https://images.prestigeonline.com/wp-content/uploads/sites/6/2025/06/16143016/usagi-chiikawa-characters-820x1024-1.jpeg" class="w-full h-full object-cover scale-110">
+                        </div>
+                        <span class="text-white text-2xl serif italic tracking-widest group-hover:text-red-500 transition-colors">ee</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+        
+        <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-white/10 no-print transition-all duration-300">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="text-lg md:text-xl font-bold serif tracking-tight text-white flex items-center gap-2">
+                    <span class="w-2 h-2 bg-red-600 rounded-full"></span> <span id="nav-site-title">hcj in Japan</span>
+                </div>
+                <div class="flex items-center gap-8">
+                    <div class="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-widest text-gray-500">
+                        <a href="#intro" class="nav-link hover:text-white transition">Intro</a>
+                        <a href="#prep" class="nav-link hover:text-white transition">Essentials</a>
+                        <a href="#overview" class="nav-link hover:text-white transition">Overview</a>
+                        <a href="#daily" class="nav-link hover:text-white transition">Itinerary</a>
+                        <a href="#author" class="nav-link hover:text-white transition">About</a>
+                    </div>
+                    <div class="flex items-center gap-3 pl-6 border-l border-white/10">
+                        <span id="nav-username" class="text-xs text-white font-serif italic hidden lg:block"></span>
+                        <div class="w-8 h-8 rounded-full border border-gray-500 overflow-hidden"><img id="nav-avatar" src="" class="w-full h-full object-cover scale-110"></div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section id="intro" class="relative h-[80vh] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0"><img src="https://www.snowmonkeyresorts.com/wp-content/uploads/2021/09/467827_m.jpg" class="w-full h-full object-cover filter brightness-[0.6]"></div>
+            <div class="relative z-10 max-w-4xl text-center px-6">
+                <span class="text-red-500 text-xs tracking-widest uppercase mb-4 block">Concept</span>
+                <h2 class="serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-10 leading-tight">"Red Leaves,<br/>White Snow & Neon."</h2>
+                <div class="w-24 h-[1px] bg-red-600 mx-auto mb-10"></div>
+                <p class="text-lg md:text-xl font-light leading-relaxed text-gray-300 max-w-2xl mx-auto">这不仅仅是一次旅行，这是一场流动的盛宴。<br>从京都千年的禅意古刹，到东京塔下沸腾的圣诞夜。</p>
+            </div>
+        </section>
+
+        <section id="prep" class="py-24 bg-zinc-900 border-b border-zinc-800">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row gap-16">
+                    <div class="lg:w-1/4">
+                        <span class="text-red-600 text-xs font-bold tracking-widest uppercase mb-3 block">01 / Checklist</span>
+                        <h2 class="serif text-4xl md:text-5xl text-white mb-6">Essentials.</h2>
+                    </div>
+                    <div class="lg:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
+                        <div id="essentials-grid" class="contents"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="overview" class="py-24 bg-black border-b border-zinc-800">
+            <div class="container mx-auto px-6">
+                 <span class="text-red-600 text-xs font-bold tracking-widest uppercase mb-3 block">02 / Overview</span>
+                 <h2 class="serif text-4xl md:text-5xl text-white mb-12">行程时间轴</h2>
+                 <div id="overview-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[1px] bg-zinc-800 border border-zinc-800"></div>
+            </div>
+        </section>
+
+        <section id="daily" class="min-h-screen bg-white text-black flex flex-col md:flex-row relative z-20 scroll-mt-20">
+            <aside class="w-full md:w-1/4 lg:w-1/5 bg-gray-50 border-r border-gray-200 sticky top-0 md:top-[60px] h-auto md:h-[calc(100vh-60px)] z-30">
+                <div class="p-6 md:p-8 h-full overflow-y-auto">
+                    <span class="text-red-600 text-xs font-bold tracking-widest uppercase mb-6 block">03 / Itinerary</span>
+                    <div id="day-nav-container" class="space-y-1 flex md:block overflow-x-auto gap-2 md:gap-0"></div>
+                </div>
+            </aside>
+            <div class="w-full md:w-3/4 lg:w-4/5 relative bg-white min-h-[80vh]">
+                <div id="day-content-container" class="p-8 md:p-16 lg:p-24 max-w-6xl mx-auto flex gap-12">
+                    </div>
+            </div>
+        </section>
+
+        <section id="author" class="relative h-screen flex items-center justify-center bg-zinc-900 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="https://essential-japan.com/wp-content/uploads/2025/07/chiikawa-anime-4-key-art-1024x538.jpg" class="w-full h-full object-cover opacity-60">
+                <div class="absolute inset-0 bg-black/40"></div>
+            </div>
+            <div class="relative z-10 text-center px-4">
+                <p class="serif text-3xl md:text-5xl lg:text-7xl text-white font-light italic leading-tight tracking-wide">"This is everything <br/><span class="text-red-500 font-normal">hcj</span> done for <span class="text-red-500 font-normal">ee</span>."</p>
+                <div class="mt-16 w-12 h-1 bg-white/20 mx-auto"></div>
+                <div class="mt-8"><span class="text-[10px] text-gray-300 uppercase tracking-[0.4em]">Designed with Love · 2025</span></div>
+            </div>
+        </section>
+
+        <footer class="bg-black py-10 text-center border-t border-zinc-900 text-[10px] text-zinc-600 uppercase tracking-widest no-print">© 2025 hcj in Japan Edition.</footer>
+    </div>
+
+    <script>
+        const users = {
+            hcj: { name: 'hcj', avatar: 'https://images.prestigeonline.com/wp-content/uploads/sites/3/2025/05/28185138/hachiware-chiikawa-characters-820x1024.jpg' },
+            ee: { name: 'ee', avatar: 'https://images.prestigeonline.com/wp-content/uploads/sites/6/2025/06/16143016/usagi-chiikawa-characters-820x1024-1.jpeg' }
+        };
+
+        const playlist = [
+            { title: "Nan-Nan", artist: "Fujii Kaze", album: "HELP EVER HURT NEVER", length: 320, cover: "https://meet.eslite.com/CMS/Files/@M091/2024-09/2024_fujii_kaze/009_fujii_kaze.jpg" },
+            { title: "Mo-Eh-Wa", artist: "Fujii Kaze", album: "HELP EVER HURT NEVER", length: 301, cover: "https://meet.eslite.com/CMS/Files/@M091/2024-09/2024_fujii_kaze/009_fujii_kaze.jpg" },
+            { title: "YASASHISA", artist: "Fujii Kaze", album: "HELP EVER HURT NEVER", length: 240, cover: "https://meet.eslite.com/CMS/Files/@M091/2024-09/2024_fujii_kaze/009_fujii_kaze.jpg" }
+        ];
+
+        const essentialsData = [
+            { title: "Documents", cn: "证件", items: ["护照 Passport (有效期覆盖)", "VJW 二维码截图 (Visit Japan)", "机票行程单 PDF", "酒店预订确认信 PDF"] },
+            { title: "Finance", cn: "资金", items: ["实体西瓜卡 (Suica/Icoca)", "现金 (5-10万日元备零钱)", "Visa/Mastercard 信用卡", "地铁72h券 x2 & 新干线票"] },
+            { title: "Tech", cn: "电子", items: ["流量卡/eSIM (落地开)", "充电宝 x2 & 两孔扁头插座", "Google Maps + 换乘案内", "暖宝宝 & 舒适走路鞋"] },
+            { title: "Hotels", cn: "酒店", type: "hotel", items: [
+                {city: "京都", name: "Ala Hotel Kyoto", addr: "518 Shiokoji-cho, Higashinotoin-dori"},
+                {city: "东京", name: "Hotel Hillarys Akasaka", addr: "3-13-10 Akasaka, Minato-ku"}
+            ]},
+            { title: "Emergency", cn: "紧急", type: "emergency", items: [
+                {num: "110", label: "警察 Police"},
+                {num: "119", label: "消防/急救 Fire"},
+                {num: "12308", label: "领保热线"}
+            ]}
+        ];
+
+        const overviewData = [
+            {day: 1, loc: "KYOTO", act: "抵达关西 · 寿司之夜", date: "Dec 14"},
+            {day: 2, loc: "KYOTO", act: "京都和服摄影日", date: "Dec 15"},
+            {day: 3, loc: "KYOTO", act: "新风馆 · 锦市场", date: "Dec 16"},
+            {day: 4, loc: "OSAKA", act: "大阪往返 · 心斋桥", date: "Dec 17"},
+            {day: 5, loc: "TOKYO", act: "新干线 · 东京塔", date: "Dec 18"},
+            {day: 6, loc: "ATAMI", act: "池袋 · 热海花火", date: "Dec 19"},
+            {day: 7, loc: "TOKYO", act: "东京和服摄影日", date: "Dec 20"},
+            {day: 8, loc: "TOKYO", act: "表参道 · 涩谷时尚", date: "Dec 21"},
+            {day: 9, loc: "DISNEY", act: "迪士尼海洋 DisneySea", date: "Dec 22"},
+            {day: 10, loc: "TOKYO", act: "丰洲市场 · 新宿", date: "Dec 23"},
+            {day: 11, loc: "HOME", act: "上野 · 平安返程", date: "Dec 24"},
+        ];
+
+        const dailyData = [
+            {
+                day: 1, intensity: 3, title: "前往关西机场抵达日", 
+                schedule: [
+                    {time: "15:00", title: "降落关西机场 (KIX)", desc: "ee: CA857 (上海浦东-关西T1 11:30-15:00)\nhcj: CZ8107 (广州白云T2-关西T1 10:25-15:00)"},
+                    {time: "16:00", title: "交通：Haruka 特急", desc: "关西机场站乘坐 JR HARUKA 特急 (京都方向)。\n约 80 分钟直达京都站。"},
+                    {time: "17:30", title: "入住：Ala Hotel Kyoto", desc: "抵达京都站后，从【地下东口】出站，步行 2 分钟即达。\n地址：518 Shiokoji-cho, Higashinotoin-dori。"},
+                    {time: "19:45", title: "晚餐：鮨麻布 東山", desc: "📍 已预约。落地首餐，享受正宗寿司。"}
+                ]
+            },
+            {
+                day: 2, intensity: 4, title: "京都和服摄影日", 
+                schedule: [
+                    {time: "09:00", title: "和服摄影 & 建仁寺", desc: "上午前往【建仁寺】拍摄。\n看点：双龙图、潮音庭 (枯山水)。"},
+                    {time: "13:00", title: "庭院巡礼", desc: "路线：无邻菴 (日式庭园) → 南禅寺 (水路阁) → 永观堂。\n经典的东山漫步路线。"},
+                    {time: "18:15", title: "晚餐：牛楽亭 (Gyurakutei)", desc: "📍 已预约。\n日式烤肉 (Yakiniku)，补充体力。"}
+                ]
+            },
+            {
+                day: 3, intensity: 3, title: "京都购物日", 
+                schedule: [
+                    {time: "10:30", title: "起点：乌丸御池", desc: "乘坐地铁至【乌丸御池站】。"},
+                    {time: "AM", title: "新风馆 (ShinPuhKan)", desc: "Beams Japan, Pilgrim Surf, Maison Kitsuné。"},
+                    {time: "PM", title: "三条通 & 河原町", desc: "Human Made 1928 (需预约), 1928 Cafe。\nPaul Smith, Arc'teryx, Graphpaper。\nBAL商场 (Tomorrowland), 藤井大丸 (The North Face), Mina (Loft)。"},
+                    {time: "17:00", title: "终点：Le Labo", desc: "京都町家店，靠近鸭川。"},
+                    {time: "Eve", title: "锦市场", desc: "吃小吃收尾。"}
+                ]
+            },
+            {
+                day: 4, intensity: 5, title: "大阪一日往返日", 
+                schedule: [
+                    {time: "INFO", title: "交通票券", desc: "⚠️ JR 刷 IC 卡 + 大阪地铁巴士一日券 (Enjoy Eco Card)。"},
+                    {time: "10:00", title: "京都 -> 大阪", desc: "京都站乘坐 JR 京都线 (新快速) 至大阪站 (30分钟)。"},
+                    {time: "11:00", title: "第一站：梅田 (午餐)", desc: "神虎拉面 (大阪站附近分店或肥后桥本店)。"},
+                    {time: "13:00", title: "第二站：黑门市场", desc: "梅田坐御堂筋线 -> 难波换千日前线 -> 日本桥 (10号口)。\n吃海鲜/和牛。"},
+                    {time: "14:30", title: "第三站：难波/道顿堀", desc: "步行前往。打卡：面包超人贩卖机、Strawberry Mania、格力高人行立牌。"},
+                    {time: "16:00", title: "第四站：心斋桥", desc: "Parco (6F Chiikawa/吉卜力)。MOK Photo 拍照。"},
+                    {time: "18:00", title: "第五站：梅田 (血拼)", desc: "御堂筋线至梅田。\n阪急三番街 (Chiikawa/Kiddy Land), KITTE, Grand Green, KAMO (球衣)。"},
+                    {time: "21:00", title: "返程", desc: "JR 新快速返回京都。"}
+                ]
+            },
+            {
+                day: 5, intensity: 3, title: "前往东京冬日圣诞主题日", 
+                schedule: [
+                    {time: "10:00", title: "交通：新干线", desc: "京都站 -> 东京站。\n⚠️ 务必预订“特大荷物スペースつき座席”。"},
+                    {time: "13:30", title: "交通：地铁", desc: "东京站换乘丸之内线 (荻洼方向) 4站至【赤坂见附站】。"},
+                    {time: "14:00", title: "入住：Hotel Hillarys", desc: "11号出口步行 2 分钟。"},
+                    {time: "15:30", title: "Info", desc: "🌟 激活第一张东京地铁三日券。"},
+                    {time: "Eve", title: "东京塔 & 麻布台", desc: "赤坂见附坐银座线 -> 溜池山王换南北线 -> 麻布十番/赤羽桥。\n六本木 Hills 圣诞市集 + 麻布台 Hills 夜景。"}
+                ]
+            },
+            {
+                day: 6, intensity: 4, title: "热海花火大会日", 
+                schedule: [
+                    {time: "AM", title: "上午：池袋", desc: "丸之内线至池袋站。\nChiikawa Land (Parco), Sunshine City。"},
+                    {time: "PM", title: "转场：东京站", desc: "JR 湘南新宿线至东京站。逛 Kitte 商场和一番街 (mofusand)。"},
+                    {time: "16:00", title: "交通：新干线至热海", desc: "换乘新干线至热海站。\n⚠️ 务必提前买好回程指定席！"},
+                    {time: "20:20", title: "热海花火大会", desc: "海边观赏烟花。"},
+                    {time: "21:30", title: "返程", desc: "新干线回东京 -> 丸之内线回赤坂见附。"}
+                ]
+            },
+            {
+                day: 7, intensity: 4, title: "东京和服摄影日", 
+                schedule: [
+                    {time: "AM", title: "浅草 (和服)", desc: "银座线至浅草站。\n浅草寺 (雷门/仲见世通) + Sanrio Gift Gate (和服 Kitty)。"},
+                    {time: "Transfer", title: "隅田川步道", desc: "步行跨过 Sumida River Walk (约15分钟) 至晴空塔。"},
+                    {time: "PM", title: "晴空塔 Solamachi", desc: "必逛：Pokemon Center (烈空坐限定), Kirby Cafe, Donguri Republic (吉卜力), LoFt。\n必吃：Toriton 回转寿司, Rokurinsha (六厘舍) 蘸面, 叙叙苑 (30F 烤肉), Qu'il fait bon (鲜果塔)。"},
+                    {time: "Eve", title: "返程", desc: "押上站乘坐半藏门线至永田町 -> 换乘至赤坂见附。"}
+                ]
+            },
+            {
+                day: 8, intensity: 5, title: "原宿涩谷时尚日", 
+                schedule: [
+                    {time: "Info", title: "票券", desc: "🌟 激活第二张东京地铁三日券。"},
+                    {time: "AM", title: "南青山 (Minami-Aoyama)", desc: "银座线至表参道 (A4/A5)。\nPrada (菱格建筑), Acne Studios, Beauty & Youth, Thom Browne, Issey Miyake, 1LDK。"},
+                    {time: "Noon", title: "表参道 (Omotesando)", desc: "Omotesando Hills, Gyre (MoMA/CDG), Ralph Lauren, Gentle Monster, Dover Street Market。"},
+                    {time: "PM", title: "原宿 (Harajuku)", desc: "步行至猫街 (Cat Street)。\nHuman Made, Kith Treats, GR8, Beams Women, Supreme, Mofusand。"},
+                    {time: "Eve", title: "涩谷 (Shibuya)", desc: "宫下公园 (Miyashita Park), Shibuya Parco (任天堂/HumanMade), Tower Records。\n回程：银座线返回赤坂见附。"}
+                ]
+            },
+            {
+                day: 9, intensity: 5, title: "东京迪士尼海洋日", 
+                schedule: [
+                    {time: "07:00", title: "交通", desc: "永田町(有乐町线) -> 新木场(JR京叶线) -> 舞滨 -> 迪士尼专列。"},
+                    {time: "08:30", title: "必买 DPA", desc: "翱翔 (Soaring), 地心探险之旅 (Journey)。"},
+                    {time: "Route", title: "游玩路线 (逆时针)", desc: "1. 翱翔 (视觉飞行)\n2. 地心探险之旅 (火山过山车)\n3. 海底两万里\n4. 印第安纳琼斯\n5. 忿怒双神 (360度翻滚)\n6. 辛巴达传奇之旅 (休息回血)\n7. 水上逗趣船\n8. 玩具总动员 (射击)"},
+                    {time: "Skip", title: "跳过", desc: "惊魂古塔 (跳楼机)。"}
+                ]
+            },
+            {
+                day: 10, intensity: 4, title: "最后冲刺日", 
+                schedule: [
+                    {time: "AM", title: "丰洲市场", desc: "有乐町线至丰洲 -> 百合海鸥号至【市场前】。\n美食：千客万来区域或大和寿司。"},
+                    {time: "PM", title: "新宿 (Shinjuku)", desc: "百合海鸥号回丰洲 -> 有乐町线至市谷 -> 都营新宿线至新宿。"},
+                    {time: "Shop", title: "购物清单", desc: "1. L-Breath (户外露营)\n2. NEWoMan (小众香氛)\n3. 伊势丹 Isetan (最强男装/地下甜品)\n4. Lumine EST (年轻潮流女装)"},
+                    {time: "Eve", title: "返程", desc: "丸之内线返回赤坂见附。"}
+                ]
+            },
+            {
+                day: 11, intensity: 2, title: "前往东京成田机场返程日", 
+                schedule: [
+                    {time: "10:00", title: "前往机场", desc: "银座线至上野站 -> 换乘 Keisei Skyliner 直达成田机场 T1。"},
+                    {time: "15:00", title: "航班：ee", desc: "CA930 东京成田T1 - 上海浦东T2 (15:00-17:25)"},
+                    {time: "14:35", title: "航班：hcj", desc: "CZ8102 东京成田T1 - 广州白云T2 (14:35起飞)"}
+                ]
+            }
+        ];
+
+        // === LOGIC ===
+        let currentSongIdx = 0;
+        let isPlaying = false;
+        const audio = document.getElementById('audio-player');
+
+        function goToLogin() {
+            document.getElementById('intro-layer').classList.add('fade-out-absolute');
+            document.getElementById('login-layer').classList.add('blur-layer-active');
+            initIpod();
+        }
+
+        function enterMainSite(uid) {
+            const user = users[uid];
+            document.getElementById('nav-avatar').src = user.avatar;
+            document.getElementById('nav-username').innerText = user.name;
+            document.getElementById('nav-site-title').innerText = `${uid} in Japan`;
+
+            document.getElementById('scene-container').classList.add('slide-up-leave');
+            document.getElementById('main-content').classList.remove('hidden');
+            setTimeout(() => document.getElementById('main-content').classList.remove('opacity-0'), 100);
+            
+            setTimeout(() => {
+                document.getElementById('scene-container').style.display = 'none';
+                document.body.style.overflowY = 'auto';
+            }, 1000);
+        }
+
+        function initIpod() { 
+            updateIpodScreen(); 
+            audio.addEventListener('timeupdate', updateProgressBar);
+            audio.addEventListener('ended', nextSong);
+        }
+
+        function updateIpodScreen() {
+            const song = playlist[currentSongIdx];
+            document.getElementById('ipod-title').innerText = song.title;
+            document.getElementById('ipod-artist').innerText = song.artist;
+            document.getElementById('ipod-album').innerText = song.album;
+            document.getElementById('ipod-art').src = song.cover;
+            
+            document.getElementById('total-time').innerText = formatTime(song.length);
+            document.getElementById('curr-time').innerText = "0:00";
+            document.getElementById('ipod-bar').style.width = "0%";
+        }
+
+        function togglePlay() {
+            if(audio.paused) {
+                audio.play();
+                isPlaying = true;
+                document.getElementById('play-icon').innerText = '▶';
+            } else {
+                audio.pause();
+                isPlaying = false;
+                document.getElementById('play-icon').innerText = '||';
+            }
+        }
+
+        function nextSong() {
+            currentSongIdx = (currentSongIdx + 1) % playlist.length;
+            resetAndPlay();
+        }
+
+        function prevSong() {
+            currentSongIdx = (currentSongIdx - 1 + playlist.length) % playlist.length;
+            resetAndPlay();
+        }
+
+        function resetAndPlay() {
+            updateIpodScreen();
+            audio.currentTime = 0;
+            if(isPlaying) audio.play();
+        }
+
+        function updateProgressBar() {
+            const song = playlist[currentSongIdx];
+            const duration = song.length; 
+            const current = audio.currentTime;
+            
+            if(current >= audio.duration) { audio.currentTime = 0; audio.play(); }
+
+            const pct = (current / duration) * 100 * 5; // Simulation speed
+            
+            if(pct <= 100) {
+                document.getElementById('ipod-bar').style.width = pct + '%';
+                const fakeCurrent = duration * (pct/100);
+                document.getElementById('curr-time').innerText = formatTime(fakeCurrent);
+                document.getElementById('total-time').innerText = '-' + formatTime(duration - fakeCurrent);
+            } else {
+                nextSong(); 
+            }
+        }
+
+        function formatTime(s) {
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return `${m}:${sec < 10 ? '0'+sec : sec}`;
+        }
+
+        function renderEssentials() {
+            const container = document.getElementById('essentials-grid');
+            let html = '';
+            essentialsData.forEach(cat => {
+                let content = '';
+                if(cat.type === 'hotel') {
+                    content = cat.items.map(h => `
+                        <li class="flex flex-col gap-2 mb-4">
+                            <div class="text-white font-bold text-base"><span class="text-red-600 mr-2">▪</span>${h.city}：${h.name}</div>
+                            <div class="text-gray-300 text-sm font-mono select-all border-l-2 border-zinc-700 pl-3">${h.addr}</div>
+                        </li>`).join('');
+                } else if (cat.type === 'emergency') {
+                    content = cat.items.map(e => `
+                        <li class="flex items-center gap-3 mb-3">
+                            <span class="text-red-600 font-bold w-12 text-lg">${e.num}</span><span class="text-gray-300 text-sm">${e.label}</span>
+                        </li>`).join('');
+                } else {
+                    content = cat.items.map(i => `
+                        <li class="flex flex-col gap-1 mb-3">
+                            <span class="text-white font-bold text-base flex items-center gap-2"><span class="text-red-600">▪</span> ${i}</span>
+                        </li>`).join('');
+                }
+                html += `<div><h4 class="text-white font-bold mb-4 border-b border-zinc-700 pb-2">${cat.title} <span class="text-xs text-zinc-500 ml-2">${cat.cn}</span></h4><ul class="">${content}</ul></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderItinerary() {
+            document.getElementById('overview-grid').innerHTML = overviewData.map((d, i) => `
+                <div onclick="jumpToDay(${i})" class="overview-card bg-black p-6 md:p-8 hover:bg-zinc-900 transition duration-300 group h-full border-r border-zinc-800 last:border-r-0">
+                    <div class="text-xs text-zinc-500 font-mono mb-3 border-b border-zinc-800 pb-2 flex justify-between">
+                        <span>${d.date}</span><span class="text-red-600 opacity-0 group-hover:opacity-100 transition">GO →</span>
+                    </div>
+                    <div class="flex justify-between items-baseline mb-3">
+                        <span class="text-xl serif italic text-white group-hover:text-red-600 transition">Day ${d.day}</span>
+                        <span class="text-[10px] uppercase tracking-widest text-red-600 border border-red-600/30 px-2 py-0.5 rounded-full">${d.loc}</span>
+                    </div>
+                    <p class="text-sm text-gray-400 group-hover:text-white transition font-light leading-snug">${d.act}</p>
+                </div>`).join('');
+
+            document.getElementById('day-nav-container').innerHTML = dailyData.map((d, i) => `
+                <button onclick="switchDay(${i})" id="nav-btn-${i}" class="day-nav-item w-full text-left py-4 px-4 md:pl-6 text-sm uppercase tracking-widest text-gray-400 hover:text-black flex-shrink-0 transition-all duration-300">
+                    <span class="font-bold">Day ${d.day}</span>
+                    <span class="hidden md:inline ml-2 text-[10px] text-gray-400 uppercase tracking-wider">/ ${overviewData[i].loc}</span>
+                </button>`).join('');
+        }
+
+        function switchDay(index) {
+            document.querySelectorAll('.day-nav-item').forEach((btn, i) => {
+                if(i === index) btn.classList.add('active', 'text-black');
+                else btn.classList.remove('active', 'text-black', 'text-gray-400');
+            });
+            const data = dailyData[index];
+            
+            // Sound Wave Visualizer
+            let waveHtml = '';
+            const lineCount = 50; 
+            const maxWidth = data.intensity * 12; 
+            
+            for (let i = 0; i < lineCount; i++) {
+                const distFromCenter = Math.abs(i - lineCount/2);
+                const width = Math.max(4, Math.random() * maxWidth * (1 - distFromCenter/lineCount));
+                const opacity = (i % 2 === 0) ? '1' : '0.6';
+                waveHtml += `<div class="wave-line-item bg-red-600" style="width: ${width}px; opacity: ${opacity};"></div>`;
+            }
+
+            document.getElementById('day-content-container').innerHTML = `
+                <div class="flex-1 fade-in-up">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-red-600 font-bold tracking-widest text-xs uppercase border border-red-600 px-3 py-1">${overviewData[index].date}</span>
+                        <span class="text-gray-400 font-serif italic text-xl">${overviewData[index].loc}</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold text-black tracking-tight mb-12">${data.title}</h2>
+                    <div class="grid gap-12">
+                        ${data.schedule.map(item => `
+                            <div class="grid grid-cols-1 md:grid-cols-[100px_1fr] gap-2 md:gap-10 group">
+                                <div class="text-sm font-mono text-gray-400 pt-1 group-hover:text-red-600 font-bold">${item.time}</div>
+                                <div>
+                                    <h3 class="text-xl serif font-medium mb-2 text-black">${item.title}</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line border-l-2 border-transparent group-hover:border-red-600 group-hover:pl-4 transition-all">${item.desc}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="hidden md:flex flex-col items-center w-24 pt-20 border-l border-gray-100 pl-4 fade-in-up delay-200 sticky top-20 h-fit">
+                    <div class="text-[10px] uppercase tracking-widest text-gray-400 mb-4 [writing-mode:vertical-lr]">Intensity</div>
+                    <div class="sound-wave-container">
+                        ${waveHtml}
+                    </div>
+                    <div class="mt-4 text-xs font-bold text-red-600 font-mono">${data.intensity}/5</div>
+                </div>
+            `;
+        }
+
+        function jumpToDay(index) {
+            document.getElementById('daily').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => switchDay(index), 300);
+        }
+
+        window.onload = () => {
+            renderEssentials();
+            renderItinerary();
+            switchDay(0);
+            
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    if(!section.id) return;
+                    if (pageYOffset >= (section.offsetTop - section.clientHeight / 3)) current = section.id;
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) link.classList.add('active');
+                });
+            });
+        };
+    </script>
+</body>
+</html>
